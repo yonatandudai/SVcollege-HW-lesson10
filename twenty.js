@@ -198,4 +198,4 @@ async function mergeFiles() {
     console.log('Files merged successfully');
 }
 
-mergeFiles();
+mergeFiles()
