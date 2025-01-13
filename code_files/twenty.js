@@ -1,10 +1,14 @@
-import fs from "node:fs/promises"
+import fs from "node:fs/promises";
+import path from 'node:path';
+
+const inputDir = './input_files';
 
 //Q1.  Write a script that reads the contents of 'input.txt' and prints it to the console.
-const data = await fs.readFile('./input.txt', 'utf8');
-//console.log(data);
+const inputFilePath = path.join(inputDir, 'input.txt');
+const data = await fs.readFile(inputFilePath, 'utf8');
+console.log(data);
 
-//Q2.Create a script that writes 'Learning Node.js is fun!' into a file named 'output.txt'.
+//Q2.Create a script that writes ' Node.js is fun!' into a file named 'output.txt'.
 await fs.writeFile('./output.txt', 'Learning Node.js is fun!');
 //console.log('File written successfully!');
 
@@ -34,7 +38,7 @@ async function ensureDirectoryExists() {
         if (err.code === 'ENOENT') {
             await fs.mkdir('./testDir2');
             console.log('Directory created successfully.');
-        } else {
+        } else {Learning
             console.error('Error checking directory:', err);
         }
     }
@@ -113,10 +117,13 @@ console.log('File moved successfully.');
 //moveFile();
 
 //fs.mkdir('./tempFiles'); //prepare a directory to store files
-//fs.appendFile('./tempFiles/file1.txt', 'Hello World\n'); //prepare a file to be deleted
-//fs.appendFile('./tempFiles/file2.txt', 'Hello World\n'); //prepare a file to be deleted
+fs.appendFile('./tempFiles/file1.txt', 'Hello World\n'); //prepare a file to be deleted
+fs.appendFile('./tempFiles/file2.txt', 'Hello World\n'); //prepare a file to be deleted
 //Q15. Write a script that deletes all files in a directory named 'tempFiles'.
 async function deleteFiles() {
+    let directoryToWatch = './tempFiles';
+    const filePath = path.join(directoryToWatch, 'input.txt');
+    const deleteFilePath = path.join(directoryToWatch, 'input.txt');
     const files = await fs.readdir('./tempFiles');
     files.forEach(async (file) => {
         await fs.unlink(`./tempFiles/${file}`);
@@ -180,7 +187,7 @@ async function createMultipleFiles() {
     }
 }
 
-//createMultipleFiles();
+createMultipleFiles();
 
 //Q19. Write a program to count the number of files in a directory and log the count.
 async function countFiles() {
@@ -191,11 +198,25 @@ async function countFiles() {
 countFiles();
 
 //Q20. Create a script to merge the contents of two text files into a third file.
+
+// Function to merge files
 async function mergeFiles() {
-    const file1 = await fs.readFile('./file1.txt', 'utf8');
-    const file2 = await fs.readFile('./file2.txt', 'utf8');
-    await fs.writeFile('./file3.txt', file1 + file2);
-    console.log('Files merged successfully');
+    const file1Path = path.join(inputDir, 'file1.txt');
+    const file2Path = path.join(inputDir, 'file2.txt');
+    const file3Path = path.join(inputDir, 'file3.txt');
+    const mergedFilePath = path.join(inputDir, 'merged.txt');
+
+    try {
+        const file1Data = await fs.readFile(file1Path, 'utf8');
+        const file2Data = await fs.readFile(file2Path, 'utf8');
+        const file3Data = await fs.readFile(file3Path, 'utf8');
+
+        const mergedData = `${file1Data}\n${file2Data}\n${file3Data}`;
+        await fs.writeFile(mergedFilePath, mergedData);
+        console.log('Files merged successfully');
+    } catch (err) {
+        console.error('Error merging files:', err);
+    }
 }
 
-mergeFiles()
+mergeFiles();
